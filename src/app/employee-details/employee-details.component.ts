@@ -43,11 +43,8 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   cancelDelete() {
-    this.deletingEmployeeId = null;
-    const modal = document.getElementById('confirmDeleteModal');
-    if (modal) {
-      modal.classList.remove('show');
-    }
+    console.log("working");
+    
   }
 
   showUpdateSuccessMessage() {
