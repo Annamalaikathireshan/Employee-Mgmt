@@ -8,22 +8,22 @@
         <div class="row">
             <div class="col">
                 <label for="employeeId" class="form-label">Employee-Id</label>
-                <input type="number"  class="form-control" [(ngModel)]="employeeObj.employeeId" id="employeeId" formControlName="employeeId" min="0" >
-                <div class="form-text text-danger" *ngIf="EmployeeId.errors?.['required'] && EmployeeId.touched ">
-                    Please enter Employee-Id
-                </div>
-                <div class="form-text text-danger" *ngIf="EmployeeId?.hasError('uniqueEmployeeId')">
-                    Employee-Id should be unique.
-                </div>
-                <div class="form-text text-danger" *ngIf="EmployeeId.errors?.['invalidFormat'] && (EmployeeId.dirty || EmployeeId.touched)">
-                    invalid format.
+                <input type="number" [ngClass]="employeeId.errors?.['required'] ? 'is-invalid' : 'is-valid'" class="form-control" id="employeeId" [formControl]="employeeId" required>
+                <div id="employeeId" *ngIf="employeeId.errors?.['required']" class="invalid-feedback">
+                    Please enter Employee-Id.
                 </div>
             </div>
             <div class="col">
-                <label for="jobtitle" class="form-label">Job-Title</label>
-                <input type="text" class="form-control" [(ngModel)]="employeeObj.jobtitle" id="jobtitle" formControlName="jobtitle">
-                <div class="form-text text-danger" *ngIf="JobTitle.errors?.['required'] && JobTitle.touched ">
-                    Please enter job-title
+                <label for="job-title" class="form-label">Job-Title</label>
+                <input type="text" [formControl]="jobTitle" class="form-control" [ngClass]="jobTitle.errors == null ? 'is-valid' : 'is-invalid'" id="job-title" required>
+                <div *ngIf="jobTitle.errors?.['required']" id="job-title" class="invalid-feedback">
+                    Please enter valid Job Title
+                </div>
+                <div *ngIf="jobTitle.errors?.['minlength']" id="job-title" class="invalid-feedback">
+                    Please enter more than 2 letters
+                </div>
+                <div *ngIf="jobTitle.errors?.['maxlength']" id="job-title" class="invalid-feedback">
+                    Please enter less than 15 letters
                 </div>
                 <div class="form-text text-danger" *ngIf="JobTitle.errors?.['maxlength'] && (JobTitle.dirty || JobTitle.touched)">
                     job-title is invalid
@@ -31,9 +31,9 @@
             </div>
             <div class="col">
                 <label for="contact" class="form-label">Contact</label>
-                <input type="text" class="form-control" [(ngModel)]="employeeObj.contact" id="contact" formControlName="contact" min="0">
-                <div class="form-text text-danger" *ngIf="Contact.errors?.['required'] && (Contact.dirty || Contact.touched)">
-                    Number is required
+                <input type="number" [ngClass]="contactNumber.errors?.['required'] ? 'is-invalid' : 'is-valid'" class="form-control" id="contact" [formControl]="contactNumber" required>
+                <div *ngIf="contactNumber.errors?.['pattern']" id="contact" class="invalid-feedback">
+                    Please enter valid number.
                 </div>
                 <div class="form-text text-danger" *ngIf="Contact.errors?.['pattern']">
                     Number is invalid
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col">
                 <label for="department" class="form-label">Department</label>
-                <select class="form-select" id="department" formControlName="department" [(ngModel)]="employeeObj.department">
+                <select class="form-select" [ngClass]="department.errors ? 'is-invalid' : 'is-valid'" [formControl]="department" id="department" required>
                     <option selected="" disabled="" value="">...</option>
                     <option>IT</option>
                     <option>SAP</option>
@@ -61,25 +61,17 @@
             </div>
             <div class="col">
                 <label for="salary" class="form-label">Salary</label>
-                <input type="number" class="form-control" [(ngModel)]="employeeObj.salary" id="salary" formControlName="salary">
-                <div class="form-text text-danger" *ngIf="Salary.errors?.['required'] && (Salary.dirty || Salary.touched)">
-                    Please enter Salary.
+                <input type="number" [ngClass]="salary.errors?.['required'] ? 'is-invalid' : 'is-valid'" [formControl]="salary" class="form-control" id="salary" required>
+                <div id="salary" class="invalid-feedback">
+                    Please enter valid number.
                 </div>
-                <div class="form-text text-danger" *ngIf="Salary.hasError('pattern') && Salary.touched">
-                    Please enter a valid numerical value
-                  </div>
-                  <div class="form-text text-danger" *ngIf="Salary.hasError('salaryRange') && Salary.touched">
-                    Salary must be between $10,000 and $100,000
-                  </div>
             </div>
             <div class="col">
-                <label for="doj" class="form-label">Hire-Date</label>
-                <input type="date" class="form-control" [(ngModel)]="employeeObj.doj" id="doj" formControlName="doj" >
-                <div class="form-text text-danger" *ngIf="Doj.errors?.['required'] && (Doj.dirty || Doj.touched)">
-                Hire Date is required.
-                </div>
-                <div class="form-text text-danger" *ngIf="Doj?.hasError('futureDate')">
-                    Hire date cannot be in the future.
+                <label for="hire-date" class="form-label">Hire-Date</label>
+                <input type="date" class="form-control is-invalid" id="hire-date" aria-describedby="hire-date"
+                    required>
+                <div id="date" class="invalid-feedback">
+                    Future dates are not allowed.
                 </div>
             </div>
         </div>
@@ -97,11 +89,11 @@
             <div class="col label-gender">
                 <div class="m-1">Gender</div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="male" value="m" formControlName="gender" [(ngModel)]="employeeObj.gender">
-                    <label class="form-check-label" for="female">Male</label>
+                    <input type="radio" class="form-check-input" id="male" value="m" name="radio-stacked" required>
+                    <label class="form-check-label" for="male">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="female" value="f" formControlName="gender" [(ngModel)]="employeeObj.gender">
+                    <input type="radio" class="form-check-input" id="female" value="f" name="radio-stacked" required>
                     <label class="form-check-label" for="female">Female</label>
                 </div>
                 <div class="form-text text-danger" *ngIf="Gender.errors?.['required'] && (Gender.dirty || Gender.touched)">
@@ -114,12 +106,10 @@
         <div class="row">
             <div class="col">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control extension-section" id="email" formControlName="email" [(ngModel)]="employeeObj.email">
-                <div class="form-text text-danger" *ngIf="Email.errors?.['required'] && (Email.dirty || Email.touched)">
-                    Email is Required.
-                </div>
-                <div class="form-text text-danger" *ngIf="Email.errors?.['email'] && (Email.dirty || Email.touched)">
-                    Email is Invalid.
+                <input type="email" class="form-control extension-section" [ngClass]="email.errors ? 'is-invalid' : 'is-valid' " id="email"
+                [formControl]="email" required>
+                <div id="email" *ngIf="email.errors" class="invalid-feedback">
+                    Please enter a vaild email
                 </div>
             </div>
         </div>

@@ -192,6 +192,3 @@ export class RegisterEmployeeComponent implements OnInit {
   }
 
 }
-
-
-
